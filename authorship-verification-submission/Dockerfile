@@ -3,7 +3,8 @@ FROM python:3.8-slim
 
 RUN pip install numpy pandas scikit-learn joblib
 
+ADD train.py /code/train.py
 ADD run.py /code/run.py
-ADD model.joblib /code/model.joblib
 
+RUN python /code/train.py
 ENTRYPOINT ["python3", "/code/run.py"]
