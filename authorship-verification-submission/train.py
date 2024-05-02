@@ -7,7 +7,8 @@ from sklearn.pipeline import Pipeline
 from tira.rest_api_client import Client
 
 if __name__ == "__main__":
-    # Load the data
+
+    # Load training data
     tira = Client()
     text = tira.pd.inputs(
         "nlpbuw-fsu-sose-24", "authorship-verification-train-20240408-training"
@@ -20,8 +21,8 @@ if __name__ == "__main__":
 
     # Train the model
     model = Pipeline([
-        ("vectorizer", TfidfVectorizer()),  # Using TF-IDF vectorizer instead of CountVectorizer
-        ("classifier", LogisticRegression())  # Using Logistic Regression instead of Naive Bayes
+        ("vectorizer", TfidfVectorizer()), 
+        ("classifier", LogisticRegression())
     ])
     model.fit(df["text"], df["generated"])
 

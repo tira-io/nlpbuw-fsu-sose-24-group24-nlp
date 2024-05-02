@@ -12,7 +12,7 @@ if __name__ == "__main__":
         "nlpbuw-fsu-sose-24", "authorship-verification-validation-20240408-training"
     )
 
-    # Load the model and make predictions
+    # Load the trained model and make predictions
     model = load(Path(__file__).parent / "model.joblib")
     predictions = model.predict(df["text"])
     df["generated"] = predictions
