@@ -13,14 +13,22 @@ if __name__ == "__main__":
         "nlpbuw-fsu-sose-24", "authorship-verification-validation-20240408-training"
     )
 
-    # Load the model and make predictions
-model = load(Path(__file__).parent / "model.joblib")
-predictions = model.predict(df["text"])
-df["generated"] = predictions
-df = df[["id", "generated"]]
+    # Define the path for the model
+    model_path = Path(__file__).parent / "model.joblib"
 
-# Save the predictions
-output_directory = get_output_directory(str(Path(__file__).parent))
-output_file = Path(output_directory) / "predictions.jsonl"
-df.to_json(output_file, orient="records", lines=True)
-print(f"Predictions saved to {output_file}.")
+    # Check if the model exists, if not, handle the case appropriately
+    if not model_path.exists():
+        print("Model file not found. Please ensure the model has been trained and the path is correct.")
+        exit(1)  # Exit if the model is not found
+
+    # Load the model and make predictions
+    model = load(model_path)
+    predictions = model.predict(df["text"])
+    df["generated"] = predictions
+    df = df[["id", "generated"]]
+
+    # Save the predictions
+    output_directory = get_output_directory(str(Path(__file__).parent))
+    output_file = Path(output_directory) / "predictions.jsonl"
+    df.to_json(output_file, orient="records", lines=True)
+    print(f"Predictions saved to {output_file}.")
