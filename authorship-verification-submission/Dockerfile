@@ -1,20 +1,14 @@
-# Use an official Python runtime as a parent image
+# Base image
 FROM python:3.8-slim
 
-# Set the working directory to /app
-WORKDIR /app
+# Set working directory in the container
+WORKDIR /code
 
-# Install any needed packages specified in requirements.txt
+# Install Python dependencies
 RUN pip install numpy pandas scikit-learn joblib
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+# Copy all local files into the container at /code
+COPY . /code
 
-# Make port 80 available to the world outside this container
-EXPOSE 80
-
-# Define environment variable
-ENV NAME World
-
-# Run run.py when the container launches
-ENTRYPOINT ["python3", "/app/run.py"]
+# Define the command to run when the container starts
+ENTRYPOINT ["python", "/code/run.py"]
