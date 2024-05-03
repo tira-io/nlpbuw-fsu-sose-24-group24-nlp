@@ -1,12 +1,14 @@
-# docker build -t username/authorship-verification-logistic-regression:0.0.1 .
+# Base image
 FROM python:3.8-slim
 
+# Set working directory
 WORKDIR /code
 
-RUN pip install numpy pandas scikit-learn joblib tira
+# Install dependencies
+RUN pip install numpy pandas scikit-learn joblib
 
+# Copy all files into the container
 COPY . /code
 
-RUN python train.py
-
-ENTRYPOINT ["python3", "run.py"]
+# Command to run the script
+CMD ["python", "combined.py"]
