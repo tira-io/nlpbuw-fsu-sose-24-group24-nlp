@@ -17,4 +17,4 @@ EXPOSE 80
 ENV NAME World
 
 # Run run.py when the container launches
-CMD ["python3", "/app/run.py"]
+ENTRYPOINT ["python3", "/app/run.py"]
