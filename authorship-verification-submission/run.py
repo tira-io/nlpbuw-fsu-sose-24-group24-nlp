@@ -23,3 +23,4 @@ if __name__ == "__main__":
     df.to_json(
         Path(output_directory) / "predictions.jsonl", orient="records", lines=True
     )
+    
