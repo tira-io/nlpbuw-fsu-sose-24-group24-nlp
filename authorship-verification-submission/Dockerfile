@@ -11,4 +11,4 @@ RUN pip install numpy pandas scikit-learn joblib
 COPY . /code
 
 # Command to run the script
-CMD ["python", "combined.py"]
+CMD ["python", "run.py"]
