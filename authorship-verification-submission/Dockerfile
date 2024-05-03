@@ -1,14 +1,14 @@
-# Base image
+# Using a specific Python base image
 FROM python:3.8-slim
 
-# Set working directory in the container
+# Set the working directory in the Docker container
 WORKDIR /code
 
-# Install Python dependencies
+# Install necessary Python packages
 RUN pip install numpy pandas scikit-learn joblib
 
-# Copy all local files into the container at /code
+# Add your script and model file to the container
 COPY . /code
 
-# Define the command to run when the container starts
+# Set the default command to execute the script when the container starts
 ENTRYPOINT ["python", "/code/run.py"]

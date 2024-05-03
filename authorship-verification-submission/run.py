@@ -1,36 +1,26 @@
-import os
 from pathlib import Path
-from joblib import dump, load
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import LogisticRegression
-from sklearn.pipeline import Pipeline
-import pandas as pd
 
-# Define the base path relative to the script location in the container
-base_path = Path(__file__).parent
-model_path = base_path / "model.joblib"
-
-def train_model():
-    # Example data for training
-    text_data = ["sample text", "more samples", "text data", "text mining"]
-    labels = [0, 1, 0, 1]
-
-    model = Pipeline([
-        ("vectorizer", TfidfVectorizer()),
-        ("classifier", LogisticRegression())
-    ])
-    model.fit(text_data, labels)
-    dump(model, model_path)
-
-def predict():
-    if not model_path.exists():
-        print("Model not found, training now...")
-        train_model()
-
-    model = load(model_path)
-    test_data = ["unknown text"]
-    predictions = model.predict(test_data)
-    print("Predictions:", predictions)
+from joblib import load
+from tira.rest_api_client import Client
+from tira.third_party_integrations import get_output_directory
 
 if __name__ == "__main__":
-    predict()
+    # Initialize TIRA client
+    tira = Client()
+
+    # Load the data
+    df = tira.pd.inputs(
+        "nlpbuw-fsu-sose-24", "authorship-verification-validation-20240408-training"
+    )
+
+    # Load the model and make predictions
+model = load(Path(__file__).parent / "model.joblib")
+predictions = model.predict(df["text"])
+df["generated"] = predictions
+df = df[["id", "generated"]]
+
+# Save the predictions
+output_directory = get_output_directory(str(Path(__file__).parent))
+output_file = Path(output_directory) / "predictions.jsonl"
+df.to_json(output_file, orient="records", lines=True)
+print(f"Predictions saved to {output_file}.")
