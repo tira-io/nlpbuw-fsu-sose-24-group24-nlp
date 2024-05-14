@@ -21,6 +21,10 @@ if __name__ == "__main__":
     # Define language IDs
     lang_ids = ["af", "az", "bg", "cs", "da", "de", "el", "en", "es", "fi", "fr", "hr", "it", "ko", "nl", "no", "pl", "ru", "ur", "zh"]
 
+    # Check if output directory exists, create if not
+    output_directory = get_output_directory(str(Path(__file__).parent))
+    Path(output_directory).mkdir(parents=True, exist_ok=True)
+
     # Convert text data into character n-grams
     vectorizer = CountVectorizer(analyzer='char', ngram_range=(3, 3))
     X = vectorizer.fit_transform(text_validation['text'])
@@ -35,8 +39,11 @@ if __name__ == "__main__":
     # Create DataFrame for predictions
     prediction_df = pd.DataFrame({'lang': prediction, 'id': text_validation['id']})
 
-    # saving the prediction
-    output_directory = get_output_directory(str(Path(__file__).parent))
-    prediction_df.to_json(
-        Path(output_directory) / "predictions.jsonl", orient="records", lines=True
-    )
+    try:
+        # saving the prediction
+        prediction_df.to_json(
+            Path(output_directory) / "predictions.jsonl", orient="records", lines=True
+        )
+        print("Predictions saved successfully.")
+    except Exception as e:
+        print(f"Error occurred while saving predictions: {e}")
