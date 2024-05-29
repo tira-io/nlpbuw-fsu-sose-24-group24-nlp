@@ -1,8 +1,10 @@
 FROM fschlatt/natural-language-processing-exercises:0.0.1
 
+# Add the run.py script
 ADD run.py /code/run.py
-ADD svc_model.pkl /code/svc_model.pkl
-ADD vectorizer.pkl /code/vectorizer.pkl
-ADD best_threshold.pkl /code/best_threshold.pkl
+
+# Add the model_lib.py file which contains the model, vectorizer, and best threshold
+ADD svc_model.joblib /code/svc_model.joblib
+ADD vectorizer.joblib /code/vectorizer.joblib
 
 ENTRYPOINT [ "python3", "/code/run.py" ]
