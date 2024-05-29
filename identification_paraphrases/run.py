@@ -12,8 +12,8 @@ if __name__ == "__main__":
 
     # Load the trained model and vectorizer
     output_directory = get_output_directory(str(Path(__file__).parent))
-    model = joblib.load(Path(output_directory) / "svc_model.joblib")
-    vectorizer = joblib.load(Path(output_directory) / "vectorizer.joblib")
+    model = joblib.load((Path(__file__).parent) / "svc_model.joblib")
+    vectorizer = joblib.load((Path(__file__).parent) / "vectorizer.joblib")
 
     # Vectorize the sentences
     X = vectorizer.transform(df["sentence1"] + " " + df["sentence2"])
